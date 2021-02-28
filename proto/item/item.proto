@@ -1,0 +1,41 @@
+// 商品
+syntax = "proto3";
+package item;
+
+service Items {
+    // 查询商品详情
+    rpc Get(Request) returns (Response) {}
+}
+
+message Item {
+    string id = 1;                      // 编码
+    string plu_code = 2;                // 名称
+    string bar_code = 3;                // 条形码
+    string name = 4;                    // 名称
+    string price = 5;                   // 价格
+    string spec = 6;                    // 规格
+    string unit = 7;                    // 单位
+    string type = 8;                    // 商品类型(0、普通商品(固定价格)，1、总价可调商品(称重类等、输入总价自动计算数量))
+    string status = 9;                  // 商品状态
+    string dept_code = 10;               // 部门编码
+    string brand_code = 11;              // 品牌ID
+    string created_at = 12;
+    string updated_at = 13;
+}
+
+message ListQuery{
+    int64 limit=1;          // 返回数量
+    int64 page=2;           // 页面
+    string sort=3;          // 排序
+    string where = 4;       // 查询条件
+}
+
+message Request {
+    ListQuery list_query = 1;           // 列表分页请求
+    Item item = 2;                      // 用户
+}
+
+message Response {
+    Item item = 1;
+    repeated Item items = 2;
+}
