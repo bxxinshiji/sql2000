@@ -17,8 +17,8 @@ message Item {
     string unit = 7;                    // 单位
     string type = 8;                    // 商品类型(0、普通商品(固定价格)，1、总价可调商品(称重类等、输入总价自动计算数量))
     string status = 9;                  // 商品状态
-    string dept_code = 10;               // 部门编码
-    string brand_code = 11;              // 品牌ID
+    string dept_code = 10;              // 部门编码
+    string brand_code = 11;             // 品牌ID
     string created_at = 12;
     string updated_at = 13;
 }

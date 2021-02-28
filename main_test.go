@@ -1,9 +1,26 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"testing"
+
+	itemPB "github.com/lecex/sql2000/proto/item"
+	db "github.com/lecex/sql2000/providers/database"
+	service "github.com/lecex/sql2000/service/repository"
+
+	"github.com/lecex/sql2000/handler"
 )
 
-func TestFrontPermitUpdateOrCreate(t *testing.T) {
-	t.Log(t)
+func TestItemsGet(t *testing.T) {
+	req := &itemPB.Request{
+		Item: &itemPB.Item{
+			BarCode: `3421118323732`,
+		},
+	}
+	res := &itemPB.Response{}
+	h := handler.Item{&service.ItemRepository{db.Engine}}
+	err := h.Get(context.TODO(), req, res)
+	fmt.Println("ItemGet", res, err)
+	t.Log(req, res, err)
 }
