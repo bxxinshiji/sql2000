@@ -3,9 +3,9 @@ package handler
 import (
 	server "github.com/micro/go-micro/v2/server"
 
-	itemPB "github.com/lecex/sql2000/proto/item"
-	db "github.com/lecex/sql2000/providers/database"
-	service "github.com/lecex/sql2000/service/repository"
+	itemPB "github.com/bxxinshiji/sql2000/proto/item"
+	db "github.com/bxxinshiji/sql2000/providers/database"
+	service "github.com/bxxinshiji/sql2000/service/repository"
 )
 
 // Register 注册

@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 
-	pb "github.com/lecex/sql2000/proto/item"
-	service "github.com/lecex/sql2000/service/repository"
+	pb "github.com/bxxinshiji/sql2000/proto/item"
+	service "github.com/bxxinshiji/sql2000/service/repository"
 )
 
 // Item 商品结构

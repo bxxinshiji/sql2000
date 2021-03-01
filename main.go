@@ -5,9 +5,9 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/util/log"
 
+	"github.com/bxxinshiji/sql2000/config"
+	"github.com/bxxinshiji/sql2000/handler"
 	_ "github.com/lecex/core/plugins" // 插件在后面执行
-	"github.com/lecex/sql2000/config"
-	"github.com/lecex/sql2000/handler"
 )
 
 func main() {

@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/MXi4oyu/Utils/cnencoder/gbk"
-	"github.com/lecex/sql2000/util"
+	"github.com/bxxinshiji/sql2000/util"
 )
 
 // Item 商品
