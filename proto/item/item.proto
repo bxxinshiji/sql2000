@@ -9,7 +9,7 @@ service Items {
 
 message Item {
     string id = 1;                      // 编码
-    string plu_code = 2;                // 名称
+    string plu_code = 2;                // plu码
     string bar_code = 3;                // 条形码
     string name = 4;                    // 名称
     string price = 5;                   // 价格
