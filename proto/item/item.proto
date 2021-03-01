@@ -19,8 +19,16 @@ message Item {
     string status = 9;                  // 商品状态
     string dept_code = 10;              // 部门编码
     string brand_code = 11;             // 品牌ID
-    string created_at = 12;
-    string updated_at = 13;
+    repeated Bar bars = 12;             // 多条码
+    string created_at = 13;
+    string updated_at = 14;
+}
+
+message Bar{
+    string plu_code = 1;                // plu码
+    string bar_code = 2;                // 条形码
+    string name = 3;                    // 名称
+    string spec = 4;                    // 规格
 }
 
 message ListQuery{

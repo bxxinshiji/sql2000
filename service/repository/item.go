@@ -18,13 +18,18 @@ type ItemRepository struct {
 
 // Get 获取商品信息
 func (srv *ItemRepository) Get(item *pd.Item) (*pd.Item, error) {
-	itemModel := &models.Item{
-		BarCode: item.BarCode,
+	itemModel := &models.Item{}
+	if item.BarCode != "" {
+		itemModel.BarCode = item.BarCode
 	}
-	err := srv.itemInfo(srv.Engine, itemModel)
+	if item.PluCode != "" {
+		itemModel.PluCode = item.PluCode
+	}
+	bars, err := srv.itemInfo(srv.Engine, itemModel)
 	if err != nil {
 		return nil, err
 	}
+	item.Bars = bars
 	item.PluCode = itemModel.PluCode
 	item.BarCode = itemModel.BarCode
 	item.Name = itemModel.PluName
@@ -41,19 +46,19 @@ func (srv *ItemRepository) Get(item *pd.Item) (*pd.Item, error) {
 }
 
 // ItemInfo 商品信息
-func (srv *ItemRepository) itemInfo(engine *xorm.Engine, item *models.Item) (err error) {
+func (srv *ItemRepository) itemInfo(engine *xorm.Engine, item *models.Item) (bars []*pd.Bar, err error) {
 	res, err := engine.Table("tBmPlu").Get(item)
 	if err != nil {
-		return err
+		return bars, err
 	}
-	if !res {
+	if !res && item.BarCode != "" {
 		// 多条形码时获取指定商品ID
 		barCode := &models.BarItem{
 			BarCode: item.BarCode,
 		}
 		res, err := engine.Table("tbmMulBar").Get(barCode)
 		if err != nil {
-			return err
+			return bars, err
 		}
 		// 重新获取商品信息
 		if res {
@@ -62,15 +67,29 @@ func (srv *ItemRepository) itemInfo(engine *xorm.Engine, item *models.Item) (err
 			item.PluCode = barCode.PluCode
 			_, err := engine.Table("tBmPlu").Get(item)
 			if err != nil {
-				return err
+				return bars, err
 			}
-			item.BarCode = barCode.BarCode
-			item.DepCode = barCode.DepCode
-			item.PluName = barCode.PluName
-			item.Spec = barCode.Spec
+		}
+	}
+	if item.PluCode != "" { // 获取多条码数据
+		bar := new(models.BarItem)
+		rows, err := engine.Table("tbmMulBar").Where("PluCode = ?", item.PluCode).Rows(bar)
+		if err != nil {
+			return bars, err
+		}
+		defer rows.Close()
+		for rows.Next() {
+			err = rows.Scan(bar)
+			bar.Hander() // 处理返回数据
+			bars = append(bars, &pd.Bar{
+				BarCode: bar.BarCode,
+				PluCode: bar.PluCode,
+				Name:    bar.PluName,
+				Spec:    bar.Spec,
+			})
 		}
 	}
 	// 处理梳理
 	item.Hander()
-	return err
+	return bars, err
 }
