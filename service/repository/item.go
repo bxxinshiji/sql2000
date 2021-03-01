@@ -2,8 +2,8 @@ package service
 
 import (
 	"github.com/go-xorm/xorm"
-	pd "github.com/lecex/sql2000/proto/item"
-	"github.com/lecex/sql2000/service/repository/models"
+	pd "github.com/bxxinshiji/sql2000/proto/item"
+	"github.com/bxxinshiji/sql2000/service/repository/models"
 )
 
 //Item 商品仓库接口

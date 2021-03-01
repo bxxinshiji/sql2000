@@ -15,4 +15,4 @@
     go get -u github.com/gogo/protobuf/protoc-gen-gogofaster
     go get -u github.com/gogo/protobuf/gogoproto
 ```
-## sql2000 商品服务
+## item 商品服务

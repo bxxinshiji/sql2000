@@ -1,4 +1,4 @@
-module github.com/lecex/sql2000
+module github.com/bxxinshiji/sql2000
 
 go 1.13
 

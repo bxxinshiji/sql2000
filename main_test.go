@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	itemPB "github.com/lecex/sql2000/proto/item"
-	db "github.com/lecex/sql2000/providers/database"
-	service "github.com/lecex/sql2000/service/repository"
+	itemPB "github.com/bxxinshiji/sql2000/proto/item"
+	db "github.com/bxxinshiji/sql2000/providers/database"
+	service "github.com/bxxinshiji/sql2000/service/repository"
 
-	"github.com/lecex/sql2000/handler"
+	"github.com/bxxinshiji/sql2000/handler"
 )
 
 func TestItemsGet(t *testing.T) {
