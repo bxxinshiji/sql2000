@@ -17,6 +17,8 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 # 安装 odbc 依赖
 RUN apk add --update unixodbc unixodbc-dev freetds
 
+ADD docker/etc_odbcinst.ini /etc/odbcinst.ini
+
 COPY --from=builder /go/src/github.com/bxxinshiji/sql2000/bin/sql2000 /usr/local/bin/
 CMD ["sql2000"]
 EXPOSE 8080
