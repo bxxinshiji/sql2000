@@ -13,15 +13,16 @@ message Item {
     string bar_code = 3;                // 条形码
     string name = 4;                    // 名称
     string price = 5;                   // 价格
-    string spec = 6;                    // 规格
-    string unit = 7;                    // 单位
-    string type = 8;                    // 商品类型(0、普通商品(固定价格)，1、总价可调商品(称重类等、输入总价自动计算数量))
-    string status = 9;                  // 商品状态
-    string dept_code = 10;              // 部门编码
-    string brand_code = 11;             // 品牌ID
-    repeated Bar bars = 12;             // 多条码
-    string created_at = 13;
-    string updated_at = 14;
+    string buy_price = 6;               // 进价
+    string spec = 7;                    // 规格
+    string unit = 8;                    // 单位
+    string type = 9;                    // 商品类型(0、普通商品(固定价格)，1、总价可调商品(称重类等、输入总价自动计算数量))
+    string status = 10;                  // 商品状态
+    string dept_code = 11;              // 部门编码
+    string brand_code = 12;             // 品牌ID
+    repeated Bar bars = 13;             // 多条码
+    string created_at = 14;
+    string updated_at = 15;
 }
 
 message Bar{

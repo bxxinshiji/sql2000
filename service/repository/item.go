@@ -34,6 +34,7 @@ func (srv *ItemRepository) Get(item *pd.Item) (bool, *pd.Item, error) {
 	item.BarCode = itemModel.BarCode
 	item.Name = itemModel.PluName
 	item.Price = itemModel.SPrice
+	item.BuyPrice = itemModel.HJPrice
 	item.Spec = itemModel.Spec
 	item.Unit = itemModel.Unit
 	item.Type = itemModel.IsWeight

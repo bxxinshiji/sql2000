@@ -13,6 +13,7 @@ type Item struct {
 	BarCode     string `xorm:"comment('条形码') 'BarCode'"`
 	Spec        string `xorm:"comment('商品规格') 'Spec'"`
 	SPrice      string `xorm:"comment('商品规格') 'SPrice'"`
+	HJPrice     string `xorm:"comment('商品规格') 'HJPrice'"`
 	Unit        string `xorm:"comment('计量单位') 'Unit'"`
 	DepCode     string `xorm:"comment('部门编码') 'DepCode'"`
 	ClsCode     string `xorm:"comment('部门编码') 'ClsCode'"`
@@ -35,6 +36,7 @@ func (i *Item) Hander() {
 	i.BarCode = util.TrimSpace(i.BarCode)
 	i.Spec = util.TrimSpace(gbk.Decode(i.Spec))
 	i.SPrice = util.TrimSpace(i.SPrice)
+	i.HJPrice = util.TrimSpace(i.HJPrice)
 	i.Unit = util.TrimSpace(i.Unit)
 	i.DepCode = util.TrimSpace(i.DepCode)
 	i.ClsCode = util.TrimSpace(i.ClsCode)
