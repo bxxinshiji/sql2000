@@ -14,7 +14,7 @@ import (
 
 //Department 商品仓库接口
 type Department interface {
-	Sum(req *pd.Request) (int64, error)
+	Sale(req *pd.Request) (int64, error)
 }
 
 // DepartmentRepository 用户仓库

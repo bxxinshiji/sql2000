@@ -1,9 +1,9 @@
-package hander
+package handler
 
 import (
 	"context"
 
-	pb "github.com/bxxinshiji/sql2000/proto/item"
+	pb "github.com/bxxinshiji/sql2000/proto/department"
 	service "github.com/bxxinshiji/sql2000/service/repository"
 )
 
