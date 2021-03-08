@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package department;
+
+service Department {
+    // 销售总额
+    rpc Sale(Request) returns (Response) {}
+}
+
+message Request {
+    repeated string date = 1; // 查询时间范围
+    repeated int64 department = 2; // 查询部门
+}
+
+message Response {
+    bool valid = 1;
+    int64 total = 2;// 汇总总额
+}
