@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/MXi4oyu/Utils v0.0.0-20190415093248-8aa8453e8876
+	github.com/bxxinshiji/sql2000-api v0.0.0-20210308085830-31b338a0e27a // indirect
 	github.com/go-xorm/xorm v0.7.9
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.4.0
