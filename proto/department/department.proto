@@ -8,8 +8,10 @@ service Department {
 }
 
 message Request {
-    repeated string date = 1; // 查询时间范围
-    repeated int64 department = 2; // 查询部门
+    string start_date = 1;
+    string end_date = 2;
+    string where = 3;
+    repeated int64 department = 4; // 查询部门
 }
 
 message Response {

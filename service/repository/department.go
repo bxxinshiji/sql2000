@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -24,8 +23,8 @@ type DepartmentRepository struct {
 
 // Sale 获取日报表总和
 func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
-	Start, _ := time.Parse("2006-01-02T15:04:05+08:00", req.Date[0])
-	End, _ := time.Parse("2006-01-02T15:04:05+08:00", req.Date[1])
+	Start, _ := time.Parse("2006-01-02T15:04:05+08:00", req.StartDate)
+	End, _ := time.Parse("2006-01-02T15:04:05+08:00", req.EndDate)
 	End = End.Add(-1) // 修正跨年 bug 结束时间减去1
 	// 获取查询年份
 	// h, _ := time.ParseDuration("1h")
@@ -44,7 +43,10 @@ func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
 	if len(whereOrParts) > 0 {
 		sql = sql + " AND (" + strings.Join(whereOrParts, " OR ") + ")"
 	}
-	fmt.Println(sql)
+	if req.Where != "" {
+		sql = sql + " AND " + req.Where
+	}
+	// fmt.Println(sql)
 	dep := &models.Department{}
 	_, err := repo.Engine.SQL(sql).Get(dep)
 	if err != nil {
