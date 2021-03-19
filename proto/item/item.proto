@@ -41,7 +41,7 @@ message Stock{ // 库存
 message Supplier{           // 供应商库存
     string code = 1;        // ID
     string name = 2;        // 名称
-    int64 number = 3;       // 库存数量
+    string number = 3;       // 库存数量
 }
 
 message ListQuery{

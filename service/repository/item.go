@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 
 	"github.com/goinggo/mapstructure"
 	pd "github.com/bxxinshiji/sql2000/proto/item"
@@ -46,14 +45,17 @@ func (srv *ItemRepository) Get(item *pd.Item) (bool, *pd.Item, error) {
 	item.BrandCode = itemModel.BrandCode
 	item.CreatedAt = itemModel.LrDate
 	item.UpdatedAt = itemModel.XgDate
-	r, err := srv.itemStock(item.PluCode)
-	if err != nil || !r {
+	stock, err := srv.itemStock(item.PluCode)
+	if err != nil {
 		return false, nil, err
 	}
+	item.Stock = stock
 	return true, item, err
 }
 // itemStock 商品库存
-func (srv *ItemRepository) itemStock(pluCode string) (res bool, err error) {
+func (srv *ItemRepository) itemStock(pluCode string) (stock *pd.Stock, err error) {
+	stock = &pd.Stock{}
+	supplier:= make([]*pd.Supplier,0)
 	sql := `
 		select 
             k.SupCode as SupCode,
@@ -64,17 +66,25 @@ func (srv *ItemRepository) itemStock(pluCode string) (res bool, err error) {
           WHERE k.PluCode = '`+pluCode+`' AND s.SupCode = k.SupCode 
           ORDER BY k.SupCode, k.DepCode
 	`
-	results, err := srv.Engine.Query(sql)
+	results, err := srv.Engine.QueryString(sql)
 	if err != nil {
-		return false, err
+		return stock, err
 	}
 	supStock := &models.SupStock{}
 	for _, res := range results {
-		
         err := mapstructure.Decode(res, supStock)
-		fmt.Println(supStock)
+		supStock.Hander()
+		if err != nil {
+			return stock, err
+		}
+		supplier = append(supplier, &pd.Supplier{
+			Code : supStock.SupCode,
+			Number : supStock.Number,
+			Name : supStock.Name,
+		})
 	}
-	return res, err
+	stock.Supplier = supplier
+	return stock, err
 }
 
 // ItemInfo 商品信息

@@ -8,6 +8,7 @@ require (
 	github.com/bxxinshiji/sql2000-api v0.0.0-20210308085830-31b338a0e27a // indirect
 	github.com/go-xorm/xorm v0.7.9
 	github.com/gogo/protobuf v1.3.1
+	github.com/goinggo/mapstructure v0.0.0-20140717182941-194205d9b4a9
 	github.com/golang/protobuf v1.4.0
 	github.com/lecex/core v1.1.3
 	github.com/micro/go-micro v1.18.0
