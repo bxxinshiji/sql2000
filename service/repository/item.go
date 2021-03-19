@@ -1,6 +1,9 @@
 package service
 
 import (
+	"fmt"
+
+	"github.com/goinggo/mapstructure"
 	pd "github.com/bxxinshiji/sql2000/proto/item"
 	"github.com/bxxinshiji/sql2000/service/repository/models"
 	"github.com/go-xorm/xorm"
@@ -43,7 +46,35 @@ func (srv *ItemRepository) Get(item *pd.Item) (bool, *pd.Item, error) {
 	item.BrandCode = itemModel.BrandCode
 	item.CreatedAt = itemModel.LrDate
 	item.UpdatedAt = itemModel.XgDate
+	r, err := srv.itemStock(item.PluCode)
+	if err != nil || !r {
+		return false, nil, err
+	}
 	return true, item, err
+}
+// itemStock 商品库存
+func (srv *ItemRepository) itemStock(pluCode string) (res bool, err error) {
+	sql := `
+		select 
+            k.SupCode as SupCode,
+            k.PluCode as PluCode,
+            (k.KcJxNumber + k.KcDxNumber) as Number,
+			s.SupName as Name
+          from tYwPluKcSup as k, tBmSup as s
+          WHERE k.PluCode = '`+pluCode+`' AND s.SupCode = k.SupCode 
+          ORDER BY k.SupCode, k.DepCode
+	`
+	results, err := srv.Engine.Query(sql)
+	if err != nil {
+		return false, err
+	}
+	supStock := &models.SupStock{}
+	for _, res := range results {
+		
+        err := mapstructure.Decode(res, supStock)
+		fmt.Println(supStock)
+	}
+	return res, err
 }
 
 // ItemInfo 商品信息

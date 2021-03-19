@@ -15,7 +15,7 @@ import (
 func TestItemsGet(t *testing.T) {
 	req := &itemPB.Request{
 		Item: &itemPB.Item{
-			BarCode: `3421118323732`,
+			BarCode: `6946831300275`,
 		},
 	}
 	res := &itemPB.Response{}

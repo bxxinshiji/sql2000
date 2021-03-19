@@ -3,6 +3,7 @@ module github.com/bxxinshiji/sql2000
 go 1.13
 
 require (
+	code.aliyun.com/xilewanggou/report-service v0.0.0-20190310070343-4eb784c924af // indirect
 	github.com/MXi4oyu/Utils v0.0.0-20190415093248-8aa8453e8876
 	github.com/bxxinshiji/sql2000-api v0.0.0-20210308085830-31b338a0e27a // indirect
 	github.com/go-xorm/xorm v0.7.9
@@ -11,6 +12,8 @@ require (
 	github.com/lecex/core v1.1.3
 	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-micro/v2 v2.3.0
+	github.com/micro/go-plugins/broker/grpc v0.0.0-20200119172437-4fe21aa238fd // indirect
+	github.com/micro/go-plugins/registry/kubernetes v0.0.0-20200119172437-4fe21aa238fd // indirect
 	github.com/shopspring/decimal v0.0.0-20200227202807-02e2044944cc
 	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0
 )
