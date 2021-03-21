@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 
 	"github.com/goinggo/mapstructure"
 	pd "github.com/bxxinshiji/sql2000/proto/item"
@@ -10,16 +11,25 @@ import (
 
 //Item 商品仓库接口
 type Item interface {
-	Get(item *pd.Item) (bool, *pd.Item, error)
+	Get(item *pd.Item, database string) (bool, *pd.Item, error)
 }
 
 // ItemRepository 商品仓库
 type ItemRepository struct {
 	Engine *xorm.Engine
+	Engine1 *xorm.Engine
 }
 
 // Get 获取商品信息
-func (srv *ItemRepository) Get(item *pd.Item) (bool, *pd.Item, error) {
+func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, error) {
+	switch database {
+	case "boxing":
+		srv.Engine = srv.Engine
+	case "chunliang":
+		srv.Engine = srv.Engine1
+	default:
+		return false, nil, fmt.Errorf("database empty")
+	}
 	itemModel := &models.Item{}
 	if item.BarCode != "" {
 		itemModel.BarCode = item.BarCode

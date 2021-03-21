@@ -53,7 +53,8 @@ message ListQuery{
 
 message Request {
     ListQuery list_query = 1;           // 列表分页请求
-    Item item = 2;                      // 用户
+    Item item = 2;  
+    string database = 3;                // 数据库
 }
 
 message Response {

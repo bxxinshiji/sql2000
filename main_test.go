@@ -15,11 +15,12 @@ import (
 func TestItemsGet(t *testing.T) {
 	req := &itemPB.Request{
 		Item: &itemPB.Item{
-			BarCode: `6946831300275`,
+			BarCode: `6923450662007`,
 		},
+		Database: "chunliang",
 	}
 	res := &itemPB.Response{}
-	h := handler.Item{&service.ItemRepository{db.Engine}}
+	h := handler.Item{&service.ItemRepository{db.Engine,db.Engine1}}
 	err := h.Get(context.TODO(), req, res)
 	fmt.Println("ItemGet", res, err)
 	t.Log(req, res, err)
