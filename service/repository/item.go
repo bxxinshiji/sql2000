@@ -22,11 +22,12 @@ type ItemRepository struct {
 
 // Get 获取商品信息
 func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, error) {
+	var engine  *xorm.Engine
 	switch database {
 	case "boxing":
-		srv.Engine = srv.Engine
+		engine = srv.Engine
 	case "chunliang":
-		srv.Engine = srv.Engine1
+		engine = srv.Engine1
 	default:
 		return false, nil, fmt.Errorf("database empty")
 	}
@@ -37,7 +38,7 @@ func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, 
 	if item.PluCode != "" {
 		itemModel.PluCode = item.PluCode
 	}
-	res, bars, err := srv.itemInfo(srv.Engine, itemModel)
+	res, bars, err := srv.itemInfo(engine, itemModel)
 	if err != nil || !res {
 		return false, nil, err
 	}
@@ -55,7 +56,7 @@ func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, 
 	item.BrandCode = itemModel.BrandCode
 	item.CreatedAt = itemModel.LrDate
 	item.UpdatedAt = itemModel.XgDate
-	stock, err := srv.itemStock(item.PluCode)
+	stock, err := srv.itemStock(engine, item.PluCode)
 	if err != nil {
 		return false, nil, err
 	}
@@ -63,7 +64,7 @@ func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, 
 	return true, item, err
 }
 // itemStock 商品库存
-func (srv *ItemRepository) itemStock(pluCode string) (stock *pd.Stock, err error) {
+func (srv *ItemRepository) itemStock(engine *xorm.Engine,pluCode string) (stock *pd.Stock, err error) {
 	stock = &pd.Stock{}
 	supplier:= make([]*pd.Supplier,0)
 	sql := `
@@ -76,7 +77,7 @@ func (srv *ItemRepository) itemStock(pluCode string) (stock *pd.Stock, err error
           WHERE k.PluCode = '`+pluCode+`' AND s.SupCode = k.SupCode 
           ORDER BY k.SupCode, k.DepCode
 	`
-	results, err := srv.Engine.QueryString(sql)
+	results, err := engine.QueryString(sql)
 	if err != nil {
 		return stock, err
 	}
