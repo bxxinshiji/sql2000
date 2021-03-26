@@ -13,5 +13,5 @@ import (
 // Register 注册
 func Register(Server server.Server) {
 	itemPB.RegisterItemsHandler(Server, &Item{&service.ItemRepository{db.Engine,db.Engine1}}) // 用户服务实现                                       // 权限管理服务实现
-	departmentPB.RegisterDepartmentHandler(Server, &Department{&service.DepartmentRepository{db.Engine}})
+	departmentPB.RegisterDepartmentHandler(Server, &Department{&service.DepartmentRepository{db.Engine,db.Engine1}})
 }

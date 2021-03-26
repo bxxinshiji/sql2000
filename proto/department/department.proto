@@ -12,6 +12,7 @@ message Request {
     string end_date = 2;
     string where = 3;
     repeated int64 department = 4; // 查询部门
+    string database = 5;                // 数据库
 }
 
 message Response {

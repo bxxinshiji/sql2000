@@ -19,10 +19,20 @@ type Department interface {
 // DepartmentRepository 用户仓库
 type DepartmentRepository struct {
 	Engine *xorm.Engine
+	Engine1 *xorm.Engine
 }
 
 // Sale 获取日报表总和
 func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
+	var engine  *xorm.Engine
+	switch req.Database {
+	case "boxing":
+		engine = srv.Engine
+	case "chunliang":
+		engine = srv.Engine1
+	default:
+		return false, nil, fmt.Errorf("database empty")
+	}
 	Start, _ := time.Parse("2006-01-02T15:04:05+08:00", req.StartDate)
 	End, _ := time.Parse("2006-01-02T15:04:05+08:00", req.EndDate)
 	End = End.Add(-1) // 修正跨年 bug 结束时间减去1
@@ -48,7 +58,7 @@ func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
 	}
 	// fmt.Println(sql)
 	dep := &models.Department{}
-	_, err := repo.Engine.SQL(sql).Get(dep)
+	_, err := engine.SQL(sql).Get(dep)
 	if err != nil {
 		return 0, err
 	}
@@ -59,7 +69,7 @@ func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
 	// 多年查询的时候累加 分数据库查询
 	for i := startYear; i < endYear; i++ {
 		sql = strings.Replace(sql, "tRptDepSale"+strconv.Itoa(i), "tRptDepSale"+strconv.Itoa(i+1), -1)
-		_, err := repo.Engine.SQL(sql).Get(dep)
+		_, err := engine.SQL(sql).Get(dep)
 		if err != nil {
 			return 0, err
 		}
