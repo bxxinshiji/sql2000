@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -23,7 +24,7 @@ type DepartmentRepository struct {
 }
 
 // Sale 获取日报表总和
-func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
+func (srv *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
 	var engine  *xorm.Engine
 	switch req.Database {
 	case "boxing":
@@ -31,7 +32,7 @@ func (repo *DepartmentRepository) Sale(req *pd.Request) (int64, error) {
 	case "chunliang":
 		engine = srv.Engine1
 	default:
-		return false, nil, fmt.Errorf("database empty")
+		return 0, fmt.Errorf("database empty")
 	}
 	Start, _ := time.Parse("2006-01-02T15:04:05+08:00", req.StartDate)
 	End, _ := time.Parse("2006-01-02T15:04:05+08:00", req.EndDate)
