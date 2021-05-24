@@ -14,7 +14,7 @@ type Item struct {
 
 // Get 获取商品详细
 func (srv *Item) Get(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
-	valid, item, err := srv.Repo.Get(req.Item, req.Database)
+	valid, item, err := srv.Repo.Get(req.Item, req.Database, req.Easy)
 	if err != nil {
 		return err
 	}

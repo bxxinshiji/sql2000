@@ -3,26 +3,26 @@ package service
 import (
 	"fmt"
 
-	"github.com/goinggo/mapstructure"
 	pd "github.com/bxxinshiji/sql2000/proto/item"
 	"github.com/bxxinshiji/sql2000/service/repository/models"
 	"github.com/go-xorm/xorm"
+	"github.com/goinggo/mapstructure"
 )
 
 //Item 商品仓库接口
 type Item interface {
-	Get(item *pd.Item, database string) (bool, *pd.Item, error)
+	Get(item *pd.Item, database string, easy bool) (bool, *pd.Item, error)
 }
 
 // ItemRepository 商品仓库
 type ItemRepository struct {
-	Engine *xorm.Engine
+	Engine  *xorm.Engine
 	Engine1 *xorm.Engine
 }
 
 // Get 获取商品信息
-func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, error) {
-	var engine  *xorm.Engine
+func (srv *ItemRepository) Get(item *pd.Item, database string, easy bool) (bool, *pd.Item, error) {
+	var engine *xorm.Engine
 	switch database {
 	case "boxing":
 		engine = srv.Engine
@@ -47,26 +47,29 @@ func (srv *ItemRepository) Get(item *pd.Item, database string) (bool, *pd.Item, 
 	item.BarCode = itemModel.BarCode
 	item.Name = itemModel.PluName
 	item.Price = itemModel.SPrice
-	item.BuyPrice = itemModel.HJPrice
-	item.Spec = itemModel.Spec
-	item.Unit = itemModel.Unit
-	item.Type = itemModel.IsWeight
 	item.Status = itemModel.PluStatus
-	item.DeptCode = itemModel.DepCode
-	item.BrandCode = itemModel.BrandCode
-	item.CreatedAt = itemModel.LrDate
-	item.UpdatedAt = itemModel.XgDate
-	stock, err := srv.itemStock(engine, item.PluCode)
-	if err != nil {
-		return false, nil, err
+	if !easy {
+		item.BuyPrice = itemModel.HJPrice
+		item.Spec = itemModel.Spec
+		item.Unit = itemModel.Unit
+		item.Type = itemModel.IsWeight
+		item.DeptCode = itemModel.DepCode
+		item.BrandCode = itemModel.BrandCode
+		item.CreatedAt = itemModel.LrDate
+		item.UpdatedAt = itemModel.XgDate
+		stock, err := srv.itemStock(engine, item.PluCode)
+		if err != nil {
+			return false, nil, err
+		}
+		item.Stock = stock
 	}
-	item.Stock = stock
 	return true, item, err
 }
+
 // itemStock 商品库存
-func (srv *ItemRepository) itemStock(engine *xorm.Engine,pluCode string) (stock *pd.Stock, err error) {
+func (srv *ItemRepository) itemStock(engine *xorm.Engine, pluCode string) (stock *pd.Stock, err error) {
 	stock = &pd.Stock{}
-	supplier:= make([]*pd.Supplier,0)
+	supplier := make([]*pd.Supplier, 0)
 	sql := `
 		select 
             k.SupCode as SupCode,
@@ -74,7 +77,7 @@ func (srv *ItemRepository) itemStock(engine *xorm.Engine,pluCode string) (stock 
             (k.KcJxNumber + k.KcDxNumber) as Number,
 			s.SupName as Name
           from tYwPluKcSup as k, tBmSup as s
-          WHERE k.PluCode = '`+pluCode+`' AND s.SupCode = k.SupCode 
+          WHERE k.PluCode = '` + pluCode + `' AND s.SupCode = k.SupCode 
           ORDER BY k.SupCode, k.DepCode
 	`
 	results, err := engine.QueryString(sql)
@@ -83,15 +86,15 @@ func (srv *ItemRepository) itemStock(engine *xorm.Engine,pluCode string) (stock 
 	}
 	supStock := &models.SupStock{}
 	for _, res := range results {
-        err := mapstructure.Decode(res, supStock)
+		err := mapstructure.Decode(res, supStock)
 		supStock.Hander()
 		if err != nil {
 			return stock, err
 		}
 		supplier = append(supplier, &pd.Supplier{
-			Code : supStock.SupCode,
-			Number : supStock.Number,
-			Name : supStock.Name,
+			Code:   supStock.SupCode,
+			Number: supStock.Number,
+			Name:   supStock.Name,
 		})
 	}
 	stock.Supplier = supplier
