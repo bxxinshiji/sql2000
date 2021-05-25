@@ -65,10 +65,10 @@ func (srv *ItemRepository) All() (goods *pd.Goods, err error) {
 		if err != nil {
 			return nil, err
 		}
-		pluCode := util.TrimSpace(item["PluCode"])
-		goods.Bars[pluCode] = &pd.Info{
-			PluCode: pluCode,
-			BarCode: util.TrimSpace(item["BarCode"]),
+		BarCode := util.TrimSpace(item["BarCode"])
+		goods.Bars[BarCode] = &pd.Info{
+			PluCode: util.TrimSpace(item["PluCode"]),
+			BarCode: BarCode,
 			Name:    util.TrimSpace(gbk.Decode(item["Name"])),
 			Price:   int64(price * 100),
 		}
