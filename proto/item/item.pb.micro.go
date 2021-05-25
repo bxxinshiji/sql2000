@@ -35,6 +35,7 @@ var _ server.Option
 
 type ItemsService interface {
 	// 查询商品详情
+	All(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 	Get(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 }
 
@@ -48,6 +49,16 @@ func NewItemsService(name string, c client.Client) ItemsService {
 		c:    c,
 		name: name,
 	}
+}
+
+func (c *itemsService) All(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "Items.All", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *itemsService) Get(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
@@ -64,11 +75,13 @@ func (c *itemsService) Get(ctx context.Context, in *Request, opts ...client.Call
 
 type ItemsHandler interface {
 	// 查询商品详情
+	All(context.Context, *Request, *Response) error
 	Get(context.Context, *Request, *Response) error
 }
 
 func RegisterItemsHandler(s server.Server, hdlr ItemsHandler, opts ...server.HandlerOption) error {
 	type items interface {
+		All(ctx context.Context, in *Request, out *Response) error
 		Get(ctx context.Context, in *Request, out *Response) error
 	}
 	type Items struct {
@@ -80,6 +93,10 @@ func RegisterItemsHandler(s server.Server, hdlr ItemsHandler, opts ...server.Han
 
 type itemsHandler struct {
 	ItemsHandler
+}
+
+func (h *itemsHandler) All(ctx context.Context, in *Request, out *Response) error {
+	return h.ItemsHandler.All(ctx, in, out)
 }
 
 func (h *itemsHandler) Get(ctx context.Context, in *Request, out *Response) error {

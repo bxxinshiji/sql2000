@@ -4,6 +4,7 @@ package item;
 
 service Items {
     // 查询商品详情
+    rpc All(Request) returns (Response) {}
     rpc Get(Request) returns (Response) {}
     
 }
@@ -25,6 +26,17 @@ message Item {
     Stock stock = 14;                   // 库存
     string created_at = 15;
     string updated_at = 16;
+}
+message Info {
+    string plu_code = 1;                // plu码
+    string bar_code = 2;                // 条形码
+    string name = 3;                    // 名称
+    int64 price = 4;                    // 价格
+}
+
+message Goods {
+    map<string, Info> bars = 1;
+    map<string, Info> plus = 2;
 }
 
 message Bar{
@@ -55,7 +67,6 @@ message Request {
     ListQuery list_query = 1;           // 列表分页请求
     Item item = 2;  
     string database = 3;                // 数据库
-    bool easy = 5;          // 是否返回商品简单信息
 }
 
 message Response {
@@ -63,4 +74,5 @@ message Response {
     int64 total = 2;
     Item item = 3;
     repeated Item items = 4;
+    Goods goods = 5;
 }

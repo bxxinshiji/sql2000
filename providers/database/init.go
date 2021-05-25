@@ -11,7 +11,7 @@ import (
 // Engine 管理包
 var (
 	// Engine1 连接
-	Engine *xorm.Engine
+	Engine  *xorm.Engine
 	Engine1 *xorm.Engine
 )
 
@@ -20,7 +20,7 @@ func init() {
 	conf := &txorm.Config{
 		Driver: env.Getenv("DB_DRIVER", "odbc"),
 		// Host 主机地址
-		Host: env.Getenv("DB_HOST", "192.168.20.10"),
+		Host: env.Getenv("DB_HOST", "192.168.5.10"),
 		// Port 主机端口
 		Port: env.Getenv("DB_PORT", "1433"),
 		// User 用户名
