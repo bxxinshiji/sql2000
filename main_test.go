@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"testing"
 
-	itemPB "github.com/bxxinshiji/sql2000/proto/item"
 	db "github.com/bxxinshiji/sql2000/providers/database"
 	service "github.com/bxxinshiji/sql2000/service/repository"
 
@@ -27,10 +24,15 @@ import (
 // }
 
 func TestItemsAll(t *testing.T) {
-	req := &itemPB.Request{}
-	res := &itemPB.Response{}
-	h := handler.Item{&service.ItemRepository{db.Engine, db.Engine1}}
-	err := h.All(context.TODO(), req, res)
-	fmt.Println("ItemGet", res, err)
-	t.Log(req, res, err)
+	// req := &itemPB.Request{}
+	// res := &itemPB.Response{}
+	// h := handler.Item{&service.ItemRepository{db.Engine, db.Engine1}}
+	// err := h.All(context.TODO(), req, res)
+	// fmt.Println("ItemGet", res, err)
+	// t.Log(req, res, err)
+}
+
+func TestSync(t *testing.T) {
+	sync := handler.Sync{CashierRepo: &service.CashierRepository{db.Engine, db.Engine1}}
+	sync.Cashier()
 }
